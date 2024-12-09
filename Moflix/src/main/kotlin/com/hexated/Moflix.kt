@@ -187,16 +187,27 @@ open class Moflix : MainAPI() {
         } else {
             json.urls
         }
-
-        iframes?.apmap { iframe ->
-            loadCustomExtractor(
-                iframe.src ?: return@apmap,
-                "$mainUrl/",
-                subtitleCallback,
-                callback,
-                iframe.quality?.substringBefore("/")?.filter { it.isDigit() }?.toIntOrNull()
-            )
-        }
+//here new version
+val firstIframe = iframes?.firstOrNull() // Nimm nur die erste Quelle
+firstIframe?.let { iframe ->
+    loadCustomExtractor(
+        iframe.src ?: return@let,
+        "$mainUrl/",
+        subtitleCallback,
+        callback,
+        iframe.quality?.substringBefore("/")?.filter { it.isDigit() }?.toIntOrNull()
+    )
+}
+      //old version
+     //   iframes?.apmap { iframe ->
+       //     loadCustomExtractor(
+         //       iframe.src ?: return@apmap,
+            //    "$mainUrl/",
+               // subtitleCallback,
+               // callback,
+               // iframe.quality?.substringBefore("/")?.filter { it.isDigit() }?.toIntOrNull()
+          //  )
+     //   }
 
         return true
     }
