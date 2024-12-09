@@ -187,17 +187,27 @@ open class Moflix : MainAPI() {
         } else {
             json.urls
         }
-//here new version fix
-val firstIframe = iframes?.firstOrNull() // Nimm nur die erste Quelle
-firstIframe?.let { iframe ->
+
+
+        //fix attmept n2
+        iframes?.forEachIndexed { index, iframe ->
     loadCustomExtractor(
-        iframe.src ?: return@let,
+        iframe.src ?: return@forEachIndexed,
         "$mainUrl/",
         subtitleCallback,
-        callback,
+        { link -> 
+            // Füge die Quelle in eine Liste oder gib alle Links aus
+            println("Quelle ${index + 1}: ${link.url}") // Debug-Ausgabe
+            if (index == 0) { // Nimm die erste Quelle
+                callback.invoke(link)
+            }
+        },
         iframe.quality?.substringBefore("/")?.filter { it.isDigit() }?.toIntOrNull()
     )
 }
+
+      
+
       //old version
      //   iframes?.apmap { iframe ->
        //     loadCustomExtractor(
