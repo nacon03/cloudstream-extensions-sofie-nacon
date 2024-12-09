@@ -144,7 +144,7 @@ open class Moflix : MainAPI() {
                 addTMDbId(res?.title?.tmdbId)
             }
         } else {
-            val urls = res?.title?.videos?.filter { it.category.equals("full", true) }
+            val urls = res?.title?.videos //?.filter { it.category.equals("full", true) }
 
             newMovieLoadResponse(
                 title,
@@ -183,11 +183,15 @@ open class Moflix : MainAPI() {
             app.get(
                 "$mainUrl/api/v1/titles/${json.id}/seasons/${json.season}/episodes/${json.episode}?loader=episodePage",
                 referer = "$mainUrl/"
-            ).parsedSafe<Episodes>()?.episode?.videos?.filter { it.category.equals("full", true) }
+            ).parsedSafe<Episodes>()?.episode?.videos //?.filter { it.category.equals("full", true) }
         } else {
             json.urls
         }
 
+        println("Gefundene Quellen ohne Filter: ${iframes?.size}")
+iframes?.forEachIndexed { index, iframe ->
+    println("Ungefilterte Quelle ${index + 1}: src=${iframe.src}, Qualität=${iframe.quality}, Kategorie=${iframe.category}")
+}
 
         //fix attmept n2
         iframes?.forEachIndexed { index, iframe ->
