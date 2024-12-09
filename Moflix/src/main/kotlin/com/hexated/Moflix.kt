@@ -227,14 +227,19 @@ return true
     }
 
     private suspend fun loadCustomExtractor(
-        url: String,
-        referer: String? = null,
-        subtitleCallback: (SubtitleFile) -> Unit,
-        callback: (ExtractorLink) -> Unit,
-        quality: Int? = null,
-    ) {
-        loadExtractor(url, referer, subtitleCallback) { link ->
-            if (link.quality == Qualities.Unknown.value || !link.isM3u8) {
+    url: String,
+    referer: String? = null,
+    subtitleCallback: (SubtitleFile) -> Unit,
+    callback: (ExtractorLink) -> Unit,
+    quality: Int? = null,
+) {
+    var linkAdded = false  // Flag, um sicherzustellen, dass nur ein Link hinzugefügt wird
+    
+    loadExtractor(url, referer, subtitleCallback) { link ->
+        // Wenn der Link eine gültige Quelle hat und M3U8 ist
+        if (link.quality == Qualities.Unknown.value || !link.isM3u8) {
+            if (!linkAdded) {
+                // Hier fügen wir den ersten gültigen Link hinzu
                 callback.invoke(
                     ExtractorLink(
                         link.source,
@@ -247,9 +252,15 @@ return true
                         link.extractorData
                     )
                 )
+                linkAdded = true  // Flag setzen, dass der erste Link bereits hinzugefügt wurde
+                println("Erster Link hinzugefügt: ${link.url}")  // Debug-Ausgabe
+            } else {
+                println("Link übersprungen: ${link.url}")  // Debug-Ausgabe, falls weitere Links ignoriert werden
             }
         }
     }
+}
+
 
     private fun String.compress(): String {
         return this.replace("/original/", "/w500/")
