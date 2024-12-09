@@ -188,27 +188,21 @@ open class Moflix : MainAPI() {
             json.urls
         }
 
-        println("Gefundene Quellen ohne Filter: ${iframes?.size}")
-iframes?.forEachIndexed { index, iframe ->
-    println("Ungefilterte Quelle ${index + 1}: src=${iframe.src}, Qualität=${iframe.quality}, Kategorie=${iframe.category}")
-}
 
-        //fix attmept n2
-        iframes?.forEachIndexed { index, iframe ->
+        //fix n3
+val firstIframe = iframes?.firstOrNull()
+if (firstIframe != null) {
+    println("Nutze erste Video-Quelle: ${firstIframe.src}")
     loadCustomExtractor(
-        iframe.src ?: return@forEachIndexed,
+        firstIframe.src ?: return false,
         "$mainUrl/",
         subtitleCallback,
-        { link -> 
-            // Füge die Quelle in eine Liste oder gib alle Links aus
-            println("Quelle ${index + 1}: ${link.url}") // Debug-Ausgabe
-            if (index == 0) { // Nimm die erste Quelle
-                callback.invoke(link)
-            }
-        },
-        iframe.quality?.substringBefore("/")?.filter { it.isDigit() }?.toIntOrNull()
+        callback,
+        firstIframe.quality?.substringBefore("/")?.filter { it.isDigit() }?.toIntOrNull()
     )
 }
+return true
+
 
       
 
@@ -223,7 +217,7 @@ iframes?.forEachIndexed { index, iframe ->
           //  )
      //   }
 
-        return true
+    //    return true
     }
 
     private fun String.fixId(): String {
