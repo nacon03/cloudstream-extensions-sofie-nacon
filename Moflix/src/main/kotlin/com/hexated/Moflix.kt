@@ -187,7 +187,7 @@ open class Moflix : MainAPI() {
         } else {
             json.urls
         }
-//here new version
+//here new version fix
 val firstIframe = iframes?.firstOrNull() // Nimm nur die erste Quelle
 firstIframe?.let { iframe ->
     loadCustomExtractor(
