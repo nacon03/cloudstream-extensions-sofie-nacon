@@ -179,15 +179,34 @@ open class Moflix : MainAPI() {
 
         val json = parseJson<LoadData>(data)
 
-        val iframes = if (json.isSeries == true) {
-            app.get(
-                "$mainUrl/api/v1/titles/${json.id}/seasons/${json.season}/episodes/${json.episode}?loader=episodePage",
-                referer = "$mainUrl/"
-            ).parsedSafe<Episodes>()?.episode?.videos?.filter { it.category.equals("full", true) }
-        } else {
-            json.urls
-        }
+    //    val iframes = if (json.isSeries == true) {
+     //       app.get(
+     //           "$mainUrl/api/v1/titles/${json.id}/seasons/${json.season}/episodes/${json.episode}?loader=episodePage",
+       //         referer = "$mainUrl/"
+         //   ).parsedSafe<Episodes>()?.episode?.videos?.filter { it.category.equals("full", true) }
+     //   } else {
+      //      json.urls
+      //  }
 
+val iframes = if (json.isSeries == true) {
+    app.get(
+        "$mainUrl/api/v1/titles/${json.id}/seasons/${json.season}/episodes/${json.episode}?loader=episodePage",
+        referer = "$mainUrl/"
+    ).parsedSafe<Episodes>()?.episode?.videos
+} else {
+    json.urls
+}
+
+// Hier wird nun überprüft, ob es mehrere CDN-URLs gibt und nach dem richtigen gesucht
+val selectedIframe = iframes?.firstOrNull { it.src?.contains("neuer-cdn.com") == true }
+    ?: iframes?.firstOrNull { it.src != null }
+
+// Wenn ein passender Link gefunden wurde, wird er genutzt
+val videoUrl = selectedIframe?.src
+
+
+
+        
         iframes?.apmap { iframe ->
             loadCustomExtractor(
                 iframe.src ?: return@apmap,
