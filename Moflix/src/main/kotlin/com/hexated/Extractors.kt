@@ -7,12 +7,12 @@ import java.net.URI
 
 class MoflixLink : MoflixClick() {
     override val name = "MoflixLink"
-    override val mainUrl = "https://moflix.upns.xyz"
+    override val mainUrl = "https://moflix-stream.day"
 }
 
 class MoflixFans : MoflixClick() {
     override val name = "MoflixFans"
-    override val mainUrl = "https://moflix.upns.xyz"
+    override val mainUrl = "https://moflix-stream.day"
 }
 
 class Highstream : MoflixClick() {
@@ -22,7 +22,7 @@ class Highstream : MoflixClick() {
 
 open class MoflixClick : ExtractorApi() {
     override val name = "MoflixClick"
-    override val mainUrl = "https://moflix.upns.xyz"
+    override val mainUrl = "https://moflix-stream.day"
     override val requiresReferer = true
 
     override suspend fun getUrl(
