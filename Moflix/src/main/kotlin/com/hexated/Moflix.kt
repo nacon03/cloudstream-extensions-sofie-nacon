@@ -198,7 +198,7 @@ val iframes = if (json.isSeries == true) {
 }
 
 // Hier wird nun überprüft, ob es mehrere CDN-URLs gibt und nach dem richtigen gesucht
-val selectedIframe = iframes?.firstOrNull { it.src?.contains("neuer-cdn.com") == true }
+val selectedIframe = iframes?.firstOrNull { it.src?.contains("moflix-stream.day") == true }
     ?: iframes?.firstOrNull { it.src != null }
 
 // Wenn ein passender Link gefunden wurde, wird er genutzt
