@@ -22,7 +22,7 @@ class Highstream : MoflixClick() {
 
 open class MoflixClick : ExtractorApi() {
     override val name = "MoflixClick"
-    override val mainUrl = "https://moflix-stream.click"
+    override val mainUrl = "https://moflix-stream.day"
     override val requiresReferer = true
 
     override suspend fun getUrl(
